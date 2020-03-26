@@ -9,7 +9,6 @@ class SlackUser(models.Model):
     DB entities corresponding to users in the Slack workspace
     """
 
-    id = models.IntegerField(primary_key=True, auto_created=True)
     slack_id = models.CharField(max_length=128)
     channel_id = models.CharField(max_length=128)
     has_answered_skill_form = models.BooleanField()

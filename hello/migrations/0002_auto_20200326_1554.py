@@ -6,22 +6,16 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('hello', '0001_initial'),
+        ("hello", "0001_initial"),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='SlackUser',
+            name="SlackUser",
             fields=[
-                ('id', models.IntegerField(auto_created=True, primary_key=True, serialize=False)),
-                ('slack_id', models.CharField(max_length=128)),
-                ('channel_id', models.CharField(max_length=128)),
-                ('has_answered_skill_form', models.BooleanField()),
+                ("slack_id", models.CharField(max_length=128)),
+                ("channel_id", models.CharField(max_length=128)),
+                ("has_answered_skill_form", models.BooleanField()),
             ],
-        ),
-        migrations.AlterField(
-            model_name='greeting',
-            name='when',
-            field=models.DateTimeField(auto_now_add=True, verbose_name='date created'),
         ),
     ]
