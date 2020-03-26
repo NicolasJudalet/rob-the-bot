@@ -1,3 +1,4 @@
+black
 django
 gunicorn
 django-heroku
