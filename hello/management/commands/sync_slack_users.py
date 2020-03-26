@@ -1,12 +1,8 @@
 """
 The Sync Slack Users List Command
 """
-import os
-import json
 
-from django.conf import settings
 from django.core.management.base import BaseCommand
-from django.utils import timezone
 
 from hello.api import get_all_users
 from hello.repositories.slack_user import save_user_list
