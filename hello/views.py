@@ -10,6 +10,7 @@ from django.views.decorators.csrf import csrf_exempt
 
 
 from .api.constants import FORM_FILLED
+from .api.slack import send_reminder_acknowledgement
 from .models import Greeting
 from .repositories.slack_user import update_status
 from .serializers import deserialize_reminder_payload
@@ -47,12 +48,15 @@ def slack(request):
         has_answered_skill_form = payload["actions"][0]["value"] == FORM_FILLED
         update_status(user_slack_id, has_answered_skill_form)
 
+        response_url = payload["response_url"]
+        send_reminder_acknowledgement(response_url, has_answered_skill_form)
+
         return HttpResponse("Response successfully stored !")
 
     except KeyError:
         logger = logging.getLogger()
-        error_message = "Could not deserialize response from slack for user {}".format(
-            user_slack_id
+        error_message = "Could not deserialize response from slack for user {}:\n{}".format(
+            user_slack_id, request.POST
         )
         logger.error()
 

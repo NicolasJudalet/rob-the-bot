@@ -7,7 +7,12 @@ import logging
 import os
 import requests
 
-from .constants import HTTP_STATUS_TOO_MANY_REQUESTS
+from gettingstarted.settings import BASE_DIR
+from .constants import (
+    HTTP_STATUS_TOO_MANY_REQUESTS,
+    THANK_YOU_MESSAGE,
+    I_WILL_BE_BACK_MESSAGE,
+)
 
 
 def get_all_users():
@@ -58,3 +63,26 @@ def get_channel_id(user_slack_id):
             user_slack_id,
         )
         return ""
+
+
+def send_reminder_acknowledgement(response_url, has_answered_skill_form):
+    """
+    Sends an acknowledgement to Slack after receiving user response to reminder
+    """
+    message_template_file = "{}/hello/api/payload_templates/acknowledged_reminder_message_payload.json".format(
+        BASE_DIR
+    )
+    with open(message_template_file) as f:
+        response_body = json.dumps(json.load(f)).replace(
+            "___acknowledgement_response___",
+            THANK_YOU_MESSAGE if has_answered_skill_form else I_WILL_BE_BACK_MESSAGE,
+        )
+
+    requests.post(
+        response_url,
+        headers={
+            "Authorization": "Bearer {}".format(os.environ.get("SLACK_TOKEN")),
+            "Content-type": "application/json",
+        },
+        data=response_body,
+    )

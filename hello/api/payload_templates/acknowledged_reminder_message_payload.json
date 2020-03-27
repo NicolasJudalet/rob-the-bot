@@ -1,0 +1,32 @@
+{
+  "blocks": [
+    {
+      "type": "section",
+      "text": {
+        "type": "mrkdwn",
+        "text": "Salut, ___name___!\n\nPour te trouver la meilleure mission possible, *nous avons besoin que tu remplisses le formulaire suivant.*\n\nCela ne te prendra pas plus de 5 min et ça nous aidera à mieux connaître tes compétences et tes envies !"
+      }
+    },
+    { "type": "divider" },
+    {
+      "type": "section",
+      "text": {
+        "type": "mrkdwn",
+        "text": "<https://docs.google.com/forms/d/e/1FAIpQLSdiw56eQNGkm5uQt7mlcR32n--J2rwfSgOYpF9eAKThFNv7rA/viewform|*Pour mieux te connaître*>\nGoogle Form\nDurée : 5 min"
+      },
+      "accessory": {
+        "type": "image",
+        "image_url": "https://img.icons8.com/nolan/96/google-forms.png",
+        "alt_text": "Google Form"
+      }
+    },
+    { "type": "divider" },
+    {
+      "type": "section",
+      "text": {
+        "type": "mrkdwn",
+        "text": "*___acknowledgement_response___*"
+      }
+    }
+  ]
+}
