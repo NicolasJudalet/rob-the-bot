@@ -1,6 +1,6 @@
 black
 django
-gunicorn
 django-heroku
+gunicorn
 pylint
 requests
