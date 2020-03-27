@@ -29,3 +29,12 @@ def save_user_list(all_users_from_slack):
                     channel_id=channel_id,
                     has_answered_skill_form=0,
                 )
+
+
+def update_status(slack_id, has_answered_skill_form):
+    """
+    Update the user status with received answer
+    """
+    SlackUser.objects.filter(slack_id=slack_id).update(
+        has_answered_skill_form=has_answered_skill_form
+    )
