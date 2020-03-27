@@ -14,13 +14,21 @@ def get_all_users():
     """
     Get a list of all slack users
     """
-    url = "{}/users.list".format(os.environ.get("SLACK_BASE_URL"))
-    response = requests.get(
-        url,
-        headers={"Authorization": "Bearer {}".format(os.environ.get("SLACK_TOKEN"))},
-    )
+    try:
+        url = "{}/users.list".format(os.environ.get("SLACK_BASE_URL"))
+        response = requests.get(
+            url,
+            headers={
+                "Authorization": "Bearer {}".format(os.environ.get("SLACK_TOKEN"))
+            },
+        )
 
-    return json.loads(response.content)["members"]
+        return json.loads(response.content)["members"]
+    except KeyError:
+        logger = logging.getLogger()
+        logger.error(
+            'Received response does not contain "members" key : \n%s', response.content
+        )
 
 
 def get_channel_id(user_slack_id):
