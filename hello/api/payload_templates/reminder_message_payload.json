@@ -1,4 +1,5 @@
 {
+  "channel": "___channel_id___",
   "blocks": [
     {
       "type": "section",
@@ -22,11 +23,29 @@
     },
     { "type": "divider" },
     {
-      "type": "section",
-      "text": {
-        "type": "mrkdwn",
-        "text": "*___acknowledgement_response___*"
-      }
+      "type": "actions",
+      "elements": [
+        {
+          "type": "button",
+          "text": {
+            "type": "plain_text",
+            "emoji": true,
+            "text": "Ok, c'est fait !"
+          },
+          "style": "primary",
+          "value": "form_filled"
+        },
+        {
+          "type": "button",
+          "text": {
+            "type": "plain_text",
+            "emoji": true,
+            "text": "Rappelle le moi demain"
+          },
+          "style": "danger",
+          "value": "form_not_filled"
+        }
+      ]
     }
   ]
 }

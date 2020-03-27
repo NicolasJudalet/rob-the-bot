@@ -38,3 +38,10 @@ def update_status(slack_id, has_answered_skill_form):
     SlackUser.objects.filter(slack_id=slack_id).update(
         has_answered_skill_form=has_answered_skill_form
     )
+
+
+def get_users_to_remind():
+    """
+    Returns the list of users who have not filled the form yet
+    """
+    return SlackUser.objects.filter(has_answered_skill_form=False)

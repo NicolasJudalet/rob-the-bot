@@ -86,3 +86,35 @@ def send_reminder_acknowledgement(response_url, has_answered_skill_form):
         },
         data=response_body,
     )
+
+
+def send_reminder(users_to_remind):
+    """
+    Sends reminder to users who have not filled the form yet
+    """
+    message_template_file = "{}/hello/api/payload_templates/reminder_message_payload.json".format(
+        BASE_DIR
+    )
+    with open(message_template_file) as f:
+        template_response_body = json.dumps(json.load(f))
+
+    for user in users_to_remind:
+        response_body = template_response_body.replace(
+            "___channel_id___", user.channel_id
+        )
+        try:
+            requests.post(
+                "{}/chat.postMessage".format(os.environ.get("SLACK_BASE_URL")),
+                headers={
+                    "Authorization": "Bearer {}".format(os.environ.get("SLACK_TOKEN")),
+                    "Content-type": "application/json",
+                },
+                data=response_body,
+            )
+
+        except Exception:
+            logger = logging.getLogger()
+            logger.error(
+                "Could not send reminder message to user with slack_id %s",
+                user.slack_id,
+            )
