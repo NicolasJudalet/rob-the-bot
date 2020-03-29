@@ -1,0 +1,39 @@
+version: 2
+jobs:
+  build: # required for runs that don't use workflows
+    working_directory: ~/rob-the-bot
+    docker:
+      - image: circleci/python:3.7.7
+        environment:
+          PIPENV_VENV_IN_PROJECT: true
+          DATABASE_URL: postgresql://root@localhost/circle_test
+      - image: nimbustech/postgres-ssl:9.5
+        environment:
+          POSTGRES_USER: root
+          POSTGRES_DB: circle_test
+    steps:
+      - checkout # checkout source code to working directory
+      - run: sudo chown -R circleci:circleci /usr/local/bin
+      - run: sudo chown -R circleci:circleci /usr/local/lib/python3.7/site-packages
+      - restore_cache: # ensure this step occurs *before* installing dependencies
+          key: deps9-{{ .Branch }}-{{ checksum "Pipfile.lock" }}
+      - run:
+          command:
+            | # use pipenv to install dependencies - the second line is necessary because of a bug installing this dependency
+            sudo pip install pipenv
+            pipenv run pip install psycopg2
+            pipenv install
+      - save_cache:
+          key: deps9-{{ .Branch }}-{{ checksum "Pipfile.lock" }}
+          paths:
+            - ".venv"
+            - "/usr/local/bin"
+            - "/usr/local/lib/python3.7/site-packages"
+      - run:
+          command: |
+            pipenv run python manage.py test
+      - store_test_results:
+          path: test-results
+      - store_artifacts:
+          path: test-results
+          destination: tr1
