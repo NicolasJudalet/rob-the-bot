@@ -11,6 +11,7 @@ from django.views.decorators.csrf import csrf_exempt
 
 from .api.constants import FORM_FILLED
 from .api.slack import send_reminder_acknowledgement
+from .authentication.slack import authenticate_call
 from .models import Greeting
 from .repositories.slack_user import update_status
 from .serializers import deserialize_reminder_payload
@@ -41,6 +42,9 @@ def slack(request):
     """
     Handles the reminder reponse call from Slack
     """
+    if not authenticate_call(request):
+        return HttpResponse("Failed authentication", status=403)
+
     try:
         payload = deserialize_reminder_payload(request)
 
@@ -51,7 +55,7 @@ def slack(request):
         response_url = payload["response_url"]
         send_reminder_acknowledgement(response_url, has_answered_skill_form)
 
-        return HttpResponse("Response successfully stored !")
+        return HttpResponse("Response successfully stored!")
 
     except KeyError:
         logger = logging.getLogger()
