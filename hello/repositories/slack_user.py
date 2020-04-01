@@ -27,7 +27,6 @@ def save_user_list(all_users_from_slack):
                 SlackUser.objects.create(
                     slack_id=user["id"],
                     channel_id=channel_id,
-                    has_answered_skill_form=0,
                 )
 
 
