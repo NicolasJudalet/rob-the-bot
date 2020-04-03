@@ -1,0 +1,61 @@
+{
+  "channel": "___channel_id___",
+  "text": ":tada: Nouveau questionnaire de compétences ! Nous avons besoin de ta réponse.",
+  "blocks": [
+    {
+      "type": "section",
+      "text": {
+        "type": "mrkdwn",
+        "text": "*:tada: Nouvelle version du questionnaire de compétences !*\nNous avons besoin de ta réponse pour te trouver la mission la plus adaptée."
+      }
+    },
+    { "type": "divider" },
+    {
+      "type": "section",
+      "text": {
+        "type": "mrkdwn",
+        "text": "<___form_url___|*Pour mieux te connaître 2.0*>\n\n:blue_book: Google Form\n\n:clock1: 10 min"
+      },
+      "accessory": {
+        "type": "image",
+        "image_url": "https://img.icons8.com/nolan/96/google-forms.png",
+        "alt_text": "Google Form"
+      }
+    },
+    { "type": "divider" },
+    {
+      "type": "actions",
+      "elements": [
+        {
+          "type": "button",
+          "text": {
+            "type": "plain_text",
+            "emoji": true,
+            "text": "Ok, c'est fait !"
+          },
+          "style": "primary",
+          "value": "form_filled"
+        },
+        {
+          "type": "button",
+          "text": {
+            "type": "plain_text",
+            "emoji": true,
+            "text": "Rappelle le moi demain"
+          },
+          "style": "danger",
+          "value": "form_not_filled"
+        },
+        {
+          "type": "button",
+          "text": {
+            "type": "plain_text",
+            "emoji": true,
+            "text": "Ne m'envoie plus de messages"
+          },
+          "value": "send_no_more_messages"
+        }
+      ]
+    }
+  ]
+}
