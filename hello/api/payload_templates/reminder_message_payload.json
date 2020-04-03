@@ -13,11 +13,11 @@
       "type": "section",
       "text": {
         "type": "mrkdwn",
-        "text": "<https://docs.google.com/forms/d/e/1FAIpQLSdiw56eQNGkm5uQt7mlcR32n--J2rwfSgOYpF9eAKThFNv7rA/viewform|*Pour mieux te connaître*>\nGoogle Form\nDurée : 5 min"
+        "text": "<___skill_form_url___|*Pour mieux te connaître*>\nGoogle Form\nDurée : 5 min"
       },
       "accessory": {
         "type": "image",
-        "image_url": "https://img.icons8.com/nolan/96/google-forms.png",
+        "image_url": "___form_icon_url___",
         "alt_text": "Google Form"
       }
     },

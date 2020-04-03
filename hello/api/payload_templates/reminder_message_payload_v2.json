@@ -14,11 +14,11 @@
       "type": "section",
       "text": {
         "type": "mrkdwn",
-        "text": "<___form_url___|*Pour mieux te connaître 2.0*>\n\n:blue_book: Google Form\n\n:clock1: 10 min"
+        "text": "<___skill_form_v2_url___|*Pour mieux te connaître 2.0*>\n\n:blue_book: Google Form\n\n:clock1: 10 min"
       },
       "accessory": {
         "type": "image",
-        "image_url": "https://img.icons8.com/nolan/96/google-forms.png",
+        "image_url": "___form_icon_url___",
         "alt_text": "Google Form"
       }
     },

@@ -76,6 +76,12 @@ def send_reminder_acknowledgement(response_url, has_answered_skill_form):
         response_body = json.dumps(json.load(f)).replace(
             "___acknowledgement_response___",
             THANK_YOU_MESSAGE if has_answered_skill_form else I_WILL_BE_BACK_MESSAGE,
+        ).replace(
+            "___skill_form_url___",
+            os.environ.get("SKILL_FORM_URL")
+        ).replace(
+            "___form_icon_url___",
+            os.environ.get("FORM_ICON_URL")
         )
 
     requests.post(
@@ -96,7 +102,13 @@ def send_reminder(users_to_remind):
         BASE_DIR
     )
     with open(message_template_file) as f:
-        template_response_body = json.dumps(json.load(f))
+        template_response_body = json.dumps(json.load(f)).replace(
+            "___skill_form_url___",
+            os.environ.get("SKILL_FORM_URL")
+        ).replace(
+            "___form_icon_url___",
+            os.environ.get("FORM_ICON_URL")
+        )
 
     for user in users_to_remind:
         response_body = template_response_body.replace(
