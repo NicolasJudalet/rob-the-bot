@@ -130,3 +130,30 @@ def send_reminder(users_to_remind):
                 "Could not send reminder message to user with slack_id %s",
                 user.slack_id,
             )
+
+
+def send_message(message_body, user):
+    """
+    Sends a message to the user
+    """
+    message_with_channel_id = message_body.replace(
+        "___channel_id___", user.channel_id
+    )
+    try:
+        response = requests.post(
+            "{}/chat.postMessage".format(os.environ.get("SLACK_BASE_URL")),
+            headers={
+                "Authorization": "Bearer {}".format(os.environ.get("SLACK_TOKEN")),
+                "Content-type": "application/json",
+            },
+            data=message_with_channel_id,
+        )
+
+        return json.loads(response.content)
+
+    except Exception:
+        logger = logging.getLogger()
+        logger.error(
+            "Could not send reminder message to user with slack_id %s",
+            user.slack_id,
+        )

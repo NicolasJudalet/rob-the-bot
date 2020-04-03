@@ -62,6 +62,6 @@ def slack(request):
         error_message = "Could not deserialize response from slack for user {}:\n{}".format(
             user_slack_id, request.POST
         )
-        logger.error()
+        logger.error(error_message)
 
         return HttpResponse(error_message, status=500)
