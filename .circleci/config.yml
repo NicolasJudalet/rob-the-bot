@@ -1,4 +1,6 @@
-version: 2
+version: 2.1
+orbs:
+  pylint: qventus/python-lint@volatile
 jobs:
   build: # required for runs that don't use workflows
     working_directory: ~/rob-the-bot
@@ -7,6 +9,7 @@ jobs:
         environment:
           PIPENV_VENV_IN_PROJECT: true
           DATABASE_URL: postgresql://root@localhost/circle_test
+          GITHUB_API_TOKEN: 96a45f303cd495fe67b3bd818d48c0273f7336e8
       - image: nimbustech/postgres-ssl:9.5
         environment:
           POSTGRES_USER: root
@@ -29,6 +32,7 @@ jobs:
             - ".venv"
             - "/usr/local/bin"
             - "/usr/local/lib/python3.7/site-packages"
+      - pylint/lint
       - run:
           command: |
             pipenv run python manage.py test
