@@ -25,8 +25,7 @@ def save_user_list(all_users_from_slack):
             channel_id = get_channel_id(user["id"])
             if channel_id is not "":
                 SlackUser.objects.create(
-                    slack_id=user["id"],
-                    channel_id=channel_id,
+                    slack_id=user["id"], channel_id=channel_id,
                 )
 
 
