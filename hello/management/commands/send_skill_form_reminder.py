@@ -28,12 +28,18 @@ class Command(BaseCommand):
         "and send them a private message reminder on Slack"
     )
 
-    MESSAGE_TYPE_ID = 1
+    def add_arguments(self, parser):
+        parser.add_argument(
+            "message-type-id", type=int, help="The id of the type of message to send"
+        )
 
     def handle(self, *args, **kwargs):
-        all_users_to_remind = get_users_to_remind()
-        message_body = get_hydrated_message_body(self.MESSAGE_TYPE_ID)
-        message_type = get_message_type(self.MESSAGE_TYPE_ID)
+        message_type_id = kwargs["message-type-id"]
+
+        all_users_to_remind = get_users_to_remind(message_type_id)
+        message_body = get_hydrated_message_body(message_type_id)
+        message_type = get_message_type(message_type_id)
+
         for user in all_users_to_remind:
             try:
                 json_response = send_message(message_body, user)

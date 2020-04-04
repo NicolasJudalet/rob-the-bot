@@ -1,6 +1,7 @@
 """
 Repository methods to access and update slack user models
 """
+from django.db.models import Q
 from hello.models.slack_user import SlackUser
 from hello.api.slack import get_channel_id
 
@@ -38,8 +39,12 @@ def update_status(slack_id, has_answered_skill_form):
     )
 
 
-def get_users_to_remind():
+def get_users_to_remind(message_type_id):
     """
-    Returns the list of users who have not filled the form yet
+    Returns the list of users who have not filled the form yet (in the version
+    corresponding to message_type_id) and have not asked to receive no more messages
     """
-    return SlackUser.objects.filter(has_answered_skill_form=False)
+    MAPPING = {"1": "has_answered_skill_form", "2": "has_answered_skill_form_v2"}
+    return SlackUser.objects.filter(
+        ~Q(**{MAPPING[str(message_type_id)]: True}), Q(send_no_more_messages=False),
+    )

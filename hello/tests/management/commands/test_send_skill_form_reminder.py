@@ -5,9 +5,6 @@ from django.core.management import call_command
 from django.test import TestCase
 from unittest.mock import call, patch
 
-from hello.management.commands.send_skill_form_reminder import (
-    Command as SendSkillFormReminderCommand,
-)
 from hello.models.slack_user import SlackUser
 
 
@@ -58,15 +55,11 @@ class SendSkillFormReminderTest(TestCase):
         Tests the command execution
         """
         get_users_to_remind.return_value = [self.user_1, self.user_2]
-        call_command("send_skill_form_reminder")
+        call_command("send_skill_form_reminder", 1)
 
-        get_users_to_remind.asset_called()
-        get_hydrated_message_body.assert_called_with(
-            SendSkillFormReminderCommand.MESSAGE_TYPE_ID
-        )
-        get_message_type.assert_called_with(
-            SendSkillFormReminderCommand.MESSAGE_TYPE_ID
-        )
+        get_users_to_remind.asset_called_with(1)
+        get_hydrated_message_body.assert_called_with(1)
+        get_message_type.assert_called_with(1)
         send_message.assert_has_calls(
             [call("message_body", self.user_1), call("message_body", self.user_2)]
         )
