@@ -30,6 +30,11 @@ jobs:
             - "/usr/local/bin"
             - "/usr/local/lib/python3.7/site-packages"
       - run:
+          name: Run Flake8
+          command: |
+            pipenv run flake8 hello
+      - run:
+          name: Run tests
           command: |
             pipenv run python manage.py test
       - store_test_results:

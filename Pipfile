@@ -8,6 +8,7 @@ black = "*"
 
 [packages]
 django-heroku = "*"
+flake8 = "*"
 gunicorn = "*"
 pylint = "*"
 requests = "*"
