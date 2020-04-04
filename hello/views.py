@@ -9,12 +9,12 @@ from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 
 
-from .api.constants import FORM_FILLED
-from .api.slack import send_reminder_acknowledgement
-from .authentication.slack import authenticate_call
-from .models import Greeting
-from .repositories.slack_user import update_status
-from .serializers import deserialize_reminder_payload
+from hello.api.constants import FORM_FILLED
+from hello.api.slack import send_reminder_acknowledgement
+from hello.authentication.slack import authenticate_call
+from hello.models.greeting import Greeting
+from hello.repositories.slack_user import update_status
+from hello.serializers import deserialize_reminder_payload
 
 
 def index(request):

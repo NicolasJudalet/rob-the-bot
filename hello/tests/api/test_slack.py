@@ -1,14 +1,12 @@
 """
 Tests for the api submodule
 """
-import os
-
 from unittest.mock import patch, call
 
 from django.test import TestCase
 
-from hello.api import send_reminder
-from hello.models import SlackUser
+from hello.api.slack import send_reminder
+from hello.models.slack_user import SlackUser
 
 
 class TestSlack(TestCase):

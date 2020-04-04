@@ -1,8 +1,8 @@
 """
 Repository methods to access and update slack user models
 """
-from hello.models import SlackUser
-from hello.api import get_channel_id
+from hello.models.slack_user import SlackUser
+from hello.api.slack import get_channel_id
 
 
 def get_all():
@@ -23,7 +23,7 @@ def save_user_list(all_users_from_slack):
     for user in all_users_from_slack:
         if user["id"] not in all_user_slack_ids_from_db and not user["is_bot"]:
             channel_id = get_channel_id(user["id"])
-            if channel_id is not "":
+            if channel_id != "":
                 SlackUser.objects.create(
                     slack_id=user["id"], channel_id=channel_id,
                 )

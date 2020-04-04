@@ -38,7 +38,7 @@ class TestSlack(TestCase):
         authenticate_call,
         deserialize_reminder_payload,
         update_status,
-        send_reminder_acknowledgement
+        send_reminder_acknowledgement,
     ):
         """Tests the slack endpoint"""
         request = self.factory.post(
@@ -71,7 +71,7 @@ class TestSlack(TestCase):
         authenticate_call,
         deserialize_reminder_payload,
         update_status,
-        send_reminder_acknowledgement
+        send_reminder_acknowledgement,
     ):
         """Tests unauthenticated calls get answered 403 and are not processed"""
         request = self.factory.post(
@@ -81,7 +81,11 @@ class TestSlack(TestCase):
         response = slack(request)
 
         authenticate_call.assert_called_with(request)
-        assert not deserialize_reminder_payload.called, 'deserialize_reminder_payload should not have been called'
-        assert not update_status.called, 'update_status should not have been called'
-        assert not send_reminder_acknowledgement.called, 'send_reminder_acknowledgement should not have been called'
+        assert (
+            not deserialize_reminder_payload.called
+        ), "deserialize_reminder_payload should not have been called"
+        assert not update_status.called, "update_status should not have been called"
+        assert (
+            not send_reminder_acknowledgement.called
+        ), "send_reminder_acknowledgement should not have been called"
         self.assertEqual(response.status_code, 403)

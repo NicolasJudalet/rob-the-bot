@@ -15,14 +15,13 @@ def authenticate_call(request):
     slack_signing_secret = os.environ.get("SLACK_SIGNING_SECRET")
 
     basestring = "v0:{}:{}".format(
-        request.headers["X-Slack-Request-Timestamp"],
-        request.body.decode("utf-8")
+        request.headers["X-Slack-Request-Timestamp"], request.body.decode("utf-8")
     ).encode("utf-8")
-    
-    request_hash = "v0=" + hmac.new(
-        bytes(slack_signing_secret, "utf-8"),
-        basestring, sha256
-    ).hexdigest()
+
+    request_hash = (
+        "v0="
+        + hmac.new(bytes(slack_signing_secret, "utf-8"), basestring, sha256).hexdigest()
+    )
 
     slack_signature = request.headers["X-Slack-Signature"]
 

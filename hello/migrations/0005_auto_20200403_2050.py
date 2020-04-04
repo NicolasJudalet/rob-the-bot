@@ -2,25 +2,26 @@
 
 from django.db import migrations
 
+
 def create_message_types(apps, schema_editor):
-    MessageType = apps.get_model('hello', 'MessageType')
+    MessageType = apps.get_model("hello", "MessageType")
     MessageType.objects.create(
-        name="skill_form_reminder_v1",
-        template_file="reminder_message_payload.json"
+        name="skill_form_reminder_v1", template_file="reminder_message_payload.json"
     )
     MessageType.objects.create(
-        name="skill_form_reminder_v2",
-        template_file="reminder_message_payload_v2.json"
+        name="skill_form_reminder_v2", template_file="reminder_message_payload_v2.json"
     )
 
+
 def delete_message_types(apps, schema_editor):
-    MessageType = apps.get_model('hello', 'MessageType')
+    MessageType = apps.get_model("hello", "MessageType")
     MessageType.objects.all().delete()
+
 
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('hello', '0004_auto_20200403_2048'),
+        ("hello", "0004_auto_20200403_2048"),
     ]
 
     operations = [

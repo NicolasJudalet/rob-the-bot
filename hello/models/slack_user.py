@@ -3,7 +3,7 @@ The Slack user model
 """
 from django.db import models
 
-# Create your models here.
+
 class SlackUser(models.Model):
     """
     DB entities corresponding to users in the Slack workspace
