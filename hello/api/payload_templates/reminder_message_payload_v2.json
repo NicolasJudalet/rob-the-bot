@@ -14,7 +14,7 @@
       "type": "section",
       "text": {
         "type": "mrkdwn",
-        "text": "<___skill_form_v2_url___|*Pour mieux te connaître 2.0*>\n\n:blue_book: Google Form\n\n:clock1: 10 min"
+        "text": "<___skill_form_url___|*Pour mieux te connaître 2.0*>\n\n:blue_book: Google Form\n\n:clock1: 10 min"
       },
       "accessory": {
         "type": "image",

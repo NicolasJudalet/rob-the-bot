@@ -9,6 +9,10 @@ from hello.models.message_type import MessageType
 
 def get_hydrated_message_body(message_type_id):
     MESSAGE_TEMPLATES_DIR = "{}/hello/api/payload_templates".format(BASE_DIR)
+    SKILL_FORM_URL_MAPPING = {
+        1: "SKILL_FORM_URL",
+        2: "SKILL_FORM_V2_URL",
+    }
 
     message_type = get(message_type_id)
     message_template_file = os.path.join(
@@ -18,7 +22,10 @@ def get_hydrated_message_body(message_type_id):
     with open(message_template_file) as f:
         message_body = (
             json.dumps(json.load(f))
-            .replace("___skill_form_url___", os.environ.get("SKILL_FORM_URL"))
+            .replace(
+                "___skill_form_url___",
+                os.environ.get(SKILL_FORM_URL_MAPPING.get(message_type_id)),
+            )
             .replace("___form_icon_url___", os.environ.get("FORM_ICON_URL"))
         )
 
