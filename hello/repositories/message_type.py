@@ -7,7 +7,7 @@ from gettingstarted.settings import BASE_DIR
 from hello.models.message_type import MessageType
 
 
-def get_hydrated_message_body(message_type_id):
+def get_hydrated_message_body(message_type_id, acknowledgement=False):
     MESSAGE_TEMPLATES_DIR = "{}/hello/api/payload_templates".format(BASE_DIR)
     SKILL_FORM_URL_MAPPING = {
         1: "SKILL_FORM_URL",
@@ -16,7 +16,10 @@ def get_hydrated_message_body(message_type_id):
 
     message_type = get(message_type_id)
     message_template_file = os.path.join(
-        MESSAGE_TEMPLATES_DIR, message_type.template_file
+        MESSAGE_TEMPLATES_DIR,
+        message_type.template_file
+        if not acknowledgement
+        else "acknowledged_" + message_type.template_file,
     )
 
     with open(message_template_file) as f:

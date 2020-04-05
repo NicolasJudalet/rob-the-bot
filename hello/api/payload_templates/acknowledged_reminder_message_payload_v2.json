@@ -1,0 +1,34 @@
+{
+  "channel": "___channel_id___",
+  "text": ":tada: Nouveau questionnaire de compétences ! Nous avons besoin de ta réponse.",
+  "blocks": [
+    {
+      "type": "section",
+      "text": {
+        "type": "mrkdwn",
+        "text": "*:tada: Nouvelle version du questionnaire de compétences !*\nNous avons besoin de ta réponse pour te trouver la mission la plus adaptée."
+      }
+    },
+    { "type": "divider" },
+    {
+      "type": "section",
+      "text": {
+        "type": "mrkdwn",
+        "text": "<___skill_form_url___|*Pour mieux te connaître 2.0*>\n\n:blue_book: Google Form\n\n:clock1: 10 min"
+      },
+      "accessory": {
+        "type": "image",
+        "image_url": "___form_icon_url___",
+        "alt_text": "Google Form"
+      }
+    },
+    { "type": "divider" },
+    {
+      "type": "section",
+      "text": {
+        "type": "mrkdwn",
+        "text": "*___acknowledgement_response___*"
+      }
+    }
+  ]
+}

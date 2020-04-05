@@ -9,12 +9,16 @@ from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 
 
-from hello.api.slack import send_reminder_acknowledgement
+from hello.api.slack import send_acknowledged_message
 from hello.authentication.slack import authenticate_call
 from hello.DTO.slack_event_payload import SlackEventPayload
 from hello.models.greeting import Greeting
-from hello.repositories.slack_user import update_status
-from hello.repositories.message import get_message_type_id_from_actions_block
+from hello.repositories.slack_user import update_status as update_user_status
+from hello.repositories.message import (
+    get_message_type_id_from_actions_block,
+    update_status as update_message_status,
+)
+from hello.repositories.message_type import get_hydrated_message_body
 from hello.serializers import deserialize_reminder_user_response_payload
 
 
@@ -53,15 +57,25 @@ def slack(request):
             slack_event_payload.actions_block_id
         )
 
-        update_status(
+        update_user_status(
             slack_event_payload.user_slack_id,
             message_type_id,
             slack_event_payload.has_answered_form,
             slack_event_payload.send_no_more_messages,
         )
 
-        send_reminder_acknowledgement(
-            slack_event_payload.response_url, slack_event_payload.has_answered_form
+        message_id = update_message_status(
+            slack_event_payload.actions_block_id, slack_event_payload.response_url
+        )
+
+        message_body = get_hydrated_message_body(message_type_id, acknowledgement=True)
+
+        send_acknowledged_message(
+            message_id,
+            slack_event_payload.response_url,
+            message_body,
+            slack_event_payload.has_answered_form,
+            slack_event_payload.send_no_more_messages,
         )
 
         return HttpResponse("Response successfully stored!")
