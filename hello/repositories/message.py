@@ -14,3 +14,10 @@ def create_and_save_from_json_response(json_response, message_type, user):
             json_response
         ),
     )
+
+
+def get_message_type_id_from_actions_block(actions_block_id):
+    message = next(
+        iter(SlackMessage.objects.all().filter(actions_block_id=actions_block_id)), None
+    )  # gets the first element of the queryset or None if the list is empty
+    return message.message_type.id if message else 1

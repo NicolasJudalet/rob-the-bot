@@ -4,7 +4,7 @@ Serializers to format payloads from and to slacks
 import json
 
 
-def deserialize_reminder_payload(request):
+def deserialize_reminder_user_response_payload(request):
     """
     Deserializes the payload sent in slack POST request when users answer the reminder
     """

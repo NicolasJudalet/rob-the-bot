@@ -24,23 +24,28 @@ class TestSlack(TestCase):
 
     @patch("hello.views.send_reminder_acknowledgement")
     @patch("hello.views.update_status")
+    @patch("hello.views.get_message_type_id_from_actions_block", return_value=2)
     @patch(
-        "hello.views.deserialize_reminder_payload",
+        "hello.views.deserialize_reminder_user_response_payload",
         return_value={
             "user": {"id": "SLACK_ID"},
             "response_url": "https://slack.com/response_url",
-            "actions": [{"value": "form_not_filled",}],
+            "actions": [{"block_id": "BLOCK_ID", "value": "form_not_filled",}],
         },
     )
     @patch("hello.views.authenticate_call", return_value=True)
     def test_slack(
         self,
         authenticate_call,
-        deserialize_reminder_payload,
+        deserialize_reminder_user_response_payload,
+        get_message_type_id_from_actions_block,
         update_status,
         send_reminder_acknowledgement,
     ):
-        """Tests the slack endpoint"""
+        """
+        Tests the slack endpoint
+        NB:This also tests the logic inside the SlackEventPayload DTO constructor
+        """
         request = self.factory.post(
             "/api/slack", data=self.request_payload, content_type="application/json"
         )
@@ -48,8 +53,9 @@ class TestSlack(TestCase):
         response = slack(request)
 
         authenticate_call.assert_called_with(request)
-        deserialize_reminder_payload.assert_called_with(request)
-        update_status.assert_called_with("SLACK_ID", False)
+        deserialize_reminder_user_response_payload.assert_called_with(request)
+        get_message_type_id_from_actions_block.assert_called_with("BLOCK_ID")
+        update_status.assert_called_with("SLACK_ID", 2, False, False)
         send_reminder_acknowledgement.assert_called_with(
             "https://slack.com/response_url", False
         )
@@ -58,7 +64,7 @@ class TestSlack(TestCase):
     @patch("hello.views.send_reminder_acknowledgement")
     @patch("hello.views.update_status")
     @patch(
-        "hello.views.deserialize_reminder_payload",
+        "hello.views.deserialize_reminder_user_response_payload",
         return_value={
             "user": {"id": "SLACK_ID"},
             "response_url": "https://slack.com/response_url",
@@ -69,7 +75,7 @@ class TestSlack(TestCase):
     def test_unauthenticated_call(
         self,
         authenticate_call,
-        deserialize_reminder_payload,
+        deserialize_reminder_user_response_payload,
         update_status,
         send_reminder_acknowledgement,
     ):
@@ -82,8 +88,8 @@ class TestSlack(TestCase):
 
         authenticate_call.assert_called_with(request)
         assert (
-            not deserialize_reminder_payload.called
-        ), "deserialize_reminder_payload should not have been called"
+            not deserialize_reminder_user_response_payload.called
+        ), "deserialize_reminder_user_response_payload should not have been called"
         assert not update_status.called, "update_status should not have been called"
         assert (
             not send_reminder_acknowledgement.called
