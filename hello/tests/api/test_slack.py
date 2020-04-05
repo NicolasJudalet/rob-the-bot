@@ -1,7 +1,7 @@
 """
 Tests for the api submodule
 """
-from unittest.mock import patch, call
+from unittest.mock import patch
 
 from django.test import TestCase
 

@@ -7,7 +7,6 @@ import logging
 import os
 import requests
 
-from gettingstarted.settings import BASE_DIR
 from .constants import (
     HTTP_STATUS_TOO_MANY_REQUESTS,
     THANK_YOU_MESSAGE,
