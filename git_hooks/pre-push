@@ -1,0 +1,4 @@
+#!/bin/sh
+
+pipenv run flake8 hello || exit 1
+pipenv run python manage.py test || exit 1
