@@ -7,6 +7,9 @@ jobs:
         environment:
           PIPENV_VENV_IN_PROJECT: true
           DATABASE_URL: postgresql://root@localhost/circle_test
+          SKILL_FORM_URL: "https://docs.google.com/forms/d/e/1FAIpQLSdiw56eQNGkm5uQt7mlcR32n--J2rwfSgOYpF9eAKThFNv7rA/viewform"
+          SKILL_FORM_V2_URL: "https://forms.gle/arB2AASzdJ5GwGUv9"
+          FORM_ICON_URL: "https://img.icons8.com/nolan/96/google-forms.png"
       - image: nimbustech/postgres-ssl:9.5
         environment:
           POSTGRES_USER: root
@@ -30,6 +33,11 @@ jobs:
             - "/usr/local/bin"
             - "/usr/local/lib/python3.7/site-packages"
       - run:
+          name: Run Flake8
+          command: |
+            pipenv run flake8 hello
+      - run:
+          name: Run tests
           command: |
             pipenv run python manage.py test
       - store_test_results:

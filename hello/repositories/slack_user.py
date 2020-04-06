@@ -1,8 +1,9 @@
 """
 Repository methods to access and update slack user models
 """
-from hello.models import SlackUser
-from hello.api import get_channel_id
+from django.db.models import Q
+from hello.models.slack_user import SlackUser
+from hello.api.slack import get_channel_id
 
 
 def get_all():
@@ -23,25 +24,43 @@ def save_user_list(all_users_from_slack):
     for user in all_users_from_slack:
         if user["id"] not in all_user_slack_ids_from_db and not user["is_bot"]:
             channel_id = get_channel_id(user["id"])
-            if channel_id is not "":
+            if channel_id != "":
                 SlackUser.objects.create(
-                    slack_id=user["id"],
-                    channel_id=channel_id,
-                    has_answered_skill_form=0,
+                    slack_id=user["id"], channel_id=channel_id,
                 )
 
 
-def update_status(slack_id, has_answered_skill_form):
+def update_status(
+    slack_id,
+    message_type_id,
+    has_answered_form,
+    send_no_more_messages,
+    answer_timestamp,
+):
     """
     Update the user status with received answer
     """
-    SlackUser.objects.filter(slack_id=slack_id).update(
-        has_answered_skill_form=has_answered_skill_form
+    MAPPING = {"1": "has_answered_skill_form", "2": "has_answered_skill_form_v2"}
+    if send_no_more_messages:
+        SlackUser.objects.filter(slack_id=slack_id).update(
+            send_no_more_messages=send_no_more_messages,
+        )
+        return
+
+    property_to_update = MAPPING[str(message_type_id)]
+    update_parameters = {property_to_update: has_answered_form}
+    if property_to_update == "has_answered_skill_form_v2":
+        update_parameters["has_answered_skill_form_v2_last_update"] = answer_timestamp
+
+    SlackUser.objects.filter(slack_id=slack_id).update(**update_parameters)
+
+
+def get_users_to_remind(message_type_id):
+    """
+    Returns the list of users who have not filled the form yet (in the version
+    corresponding to message_type_id) and have not asked to receive no more messages
+    """
+    MAPPING = {"1": "has_answered_skill_form", "2": "has_answered_skill_form_v2"}
+    return SlackUser.objects.filter(
+        ~Q(**{MAPPING[str(message_type_id)]: True}), Q(send_no_more_messages=False),
     )
-
-
-def get_users_to_remind():
-    """
-    Returns the list of users who have not filled the form yet
-    """
-    return SlackUser.objects.filter(has_answered_skill_form=False)

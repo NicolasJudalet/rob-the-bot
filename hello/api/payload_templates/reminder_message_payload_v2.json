@@ -1,11 +1,12 @@
 {
   "channel": "___channel_id___",
+  "text": ":tada: Nouveau questionnaire de compétences ! Nous avons besoin de ta réponse.",
   "blocks": [
     {
       "type": "section",
       "text": {
         "type": "mrkdwn",
-        "text": "Hello !\n\nPour te trouver la meilleure mission possible, *nous avons besoin que tu remplisses le formulaire suivant.*\n\nCela ne te prendra pas plus de 5 min et ça nous aidera à mieux connaître tes compétences et tes envies !"
+        "text": "*:tada: Nouvelle version du questionnaire de compétences !*\nNous avons besoin de ta réponse pour te trouver la mission la plus adaptée."
       }
     },
     { "type": "divider" },
@@ -13,7 +14,7 @@
       "type": "section",
       "text": {
         "type": "mrkdwn",
-        "text": "<___skill_form_url___|*Pour mieux te connaître*>\nGoogle Form\nDurée : 5 min"
+        "text": "<___skill_form_url___|*Pour mieux te connaître 2.0*>\n\n:blue_book: Google Form\n\n:clock1: 10 min"
       },
       "accessory": {
         "type": "image",
@@ -44,6 +45,15 @@
           },
           "style": "danger",
           "value": "form_not_filled"
+        },
+        {
+          "type": "button",
+          "text": {
+            "type": "plain_text",
+            "emoji": true,
+            "text": "Ne m'envoie plus de messages"
+          },
+          "value": "send_no_more_messages"
         }
       ]
     }
