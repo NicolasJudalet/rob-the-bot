@@ -30,19 +30,29 @@ def save_user_list(all_users_from_slack):
                 )
 
 
-def update_status(slack_id, message_type_id, has_answered_form, send_no_more_messages):
+def update_status(
+    slack_id,
+    message_type_id,
+    has_answered_form,
+    send_no_more_messages,
+    answer_timestamp,
+):
     """
     Update the user status with received answer
     """
     MAPPING = {"1": "has_answered_skill_form", "2": "has_answered_skill_form_v2"}
     if send_no_more_messages:
         SlackUser.objects.filter(slack_id=slack_id).update(
-            send_no_more_messages=send_no_more_messages
+            send_no_more_messages=send_no_more_messages,
         )
-    else:
-        SlackUser.objects.filter(slack_id=slack_id).update(
-            **{MAPPING[str(message_type_id)]: has_answered_form}
-        )
+        return
+
+    property_to_update = MAPPING[str(message_type_id)]
+    update_parameters = {property_to_update: has_answered_form}
+    if property_to_update == "has_answered_skill_form_v2":
+        update_parameters["has_answered_skill_form_v2_last_update"] = answer_timestamp
+
+    SlackUser.objects.filter(slack_id=slack_id).update(**update_parameters)
 
 
 def get_users_to_remind(message_type_id):

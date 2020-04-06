@@ -6,6 +6,7 @@ import os
 
 from django.shortcuts import render
 from django.http import HttpResponse
+from django.utils import timezone
 from django.views.decorators.csrf import csrf_exempt
 
 
@@ -56,16 +57,20 @@ def slack(request):
         message_type_id = get_message_type_id_from_actions_block(
             slack_event_payload.actions_block_id
         )
+        answer_timestamp = timezone.now()
 
         update_user_status(
             slack_event_payload.user_slack_id,
             message_type_id,
             slack_event_payload.has_answered_form,
             slack_event_payload.send_no_more_messages,
+            answer_timestamp,
         )
 
         message_id = update_message_status(
-            slack_event_payload.actions_block_id, slack_event_payload.response_url
+            slack_event_payload.actions_block_id,
+            slack_event_payload.response_url,
+            answer_timestamp,
         )
 
         message_body = get_hydrated_message_body(message_type_id, acknowledgement=True)

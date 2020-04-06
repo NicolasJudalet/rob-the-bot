@@ -1,8 +1,6 @@
 """
 Repository methods to access, create and update Message objects
 """
-from time import timezone
-
 from hello.models.slack_message import SlackMessage
 from hello.serializers import get_actions_block_id_from_reminder_response_payload
 
@@ -24,15 +22,14 @@ def get_message_type_id_from_actions_block(actions_block_id):
     return message.message_type.id if message else 1
 
 
-def update_status(actions_block_id, response_url):
-    message = next(
-        iter(SlackMessage.objects.all().filter(actions_block_id=actions_block_id)), None
+def update_status(actions_block_id, response_url, answer_timestamp):
+    """
+    Updates a message status
+    """
+    query_set = SlackMessage.objects.filter(actions_block_id=actions_block_id)
+    query_set.update(
+        answered_at=answer_timestamp, response_url=response_url,
     )
+    message = next(iter(query_set), None)
 
-    if message:
-        message.update(
-            answered_at=timezone.now, response_url=response_url,
-        )
-        return message.id
-    else:
-        return None
+    return message.id
