@@ -18,10 +18,12 @@ help: ## Show this help
 .PHONY: install
 install: ## Install project development environment
 	@printf "Start installing app\n"
+	# The following line is necessary because to fix a bug with this library when simply running pipenv install
+	@pipenv run pip install psycopg2
 	@pipenv install
 	@make migrate
 	@make creategithooks
-	@printf "Lean app successfully installed !\n"
+	@printf "Rob-the-bot successfully installed !\n"
 
 .PHONY: creategithooks
 creategithooks: ## Create git hooks (pre-commit and pre-push)
@@ -49,7 +51,7 @@ migrate: ## Run database migrations
 	@pipenv run python manage.py migrate
 
 .PHONY: showmigrations
-migrate: ## Run database migrations
+showmigrations: ## Show database migrations
 	@pipenv run python manage.py showmigrations
 
 ## Lint and tests
