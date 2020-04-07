@@ -65,17 +65,17 @@ lint: ## Run all linters and display errors
 .PHONY: lint-black
 lint-black: ## Run black linter and display errors
 	@printf "Running black linter\n"
-	@pipenv run python -m black --diff --check .
+	@pipenv run python -m black --diff --check ./hello
 
 .PHONY: lint-flake8
 lint-flake8: ## Run flake8 linter and display errors
 	@printf "Running flake8 linter\n"
-	@pipenv run python -m flake8 .
+	@pipenv run python -m flake8 ./hello
 
 .PHONY: lint-fix
 lint-fix: ## Fix errors reported by black linter
 	@printf "Running black formatter\n"
-	@pipenv run python -m black .
+	@pipenv run python -m black ./hello
 
 ## Custom Commands
 
