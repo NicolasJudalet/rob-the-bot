@@ -23,6 +23,7 @@ install: ## Install project development environment
 	@pipenv install
 	@make migrate
 	@make creategithooks
+	@npm install
 	@printf "Rob-the-bot successfully installed !\n"
 
 .PHONY: creategithooks

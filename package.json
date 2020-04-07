@@ -1,0 +1,31 @@
+{
+  "name": "rob-the-bot",
+  "version": "1.0.0",
+  "description": "This project is a tool for the [_Data against Covid-19_](https://twitter.com/data_covid?s=09) initiative.",
+  "main": "./google_script/code.gs",
+  "directories": {
+    "lib": "lib"
+  },
+  "dependencies": {
+    "@types/google-apps-script": "^1.0.11",
+    "clasp": "^1.0.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/NicolasJudalet/rob-the-bot.git"
+  },
+  "keywords": [
+    "Google",
+    "Script"
+  ],
+  "author": "nicolas.judalet@gmail.com",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/NicolasJudalet/rob-the-bot/issues"
+  },
+  "homepage": "https://github.com/NicolasJudalet/rob-the-bot#readme"
+}
