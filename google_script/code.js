@@ -57,11 +57,7 @@ function copyPasteFormulas(e) {
   skillsLevelsRange.setValues(convertSkillsLabelsIntoLevels(skillsLevelsRange));
 
   // Copy all correctly formatted values to SkillsFinder sheet
-  duplicateFormValues(
-    insertedRow,
-    e["range"]["columnStart"],
-    e["range"]["columnEnd"]
-  );
+  duplicateFormValues();
 }
 
 // ---------------------------
@@ -70,11 +66,7 @@ function copyPasteFormulas(e) {
 // Copy pastes the values from
 // Skills DB to Skills Finder
 
-function duplicateFormValues(
-  insertedRangeRow,
-  insertedRangeFirstColumn,
-  insertedRangeLastColumn
-) {
+function duplicateFormValues() {
   // Constants
   const SKILLS_DB_SHEET_NAME = "Skills DB";
   const SKILLS_FINDER_SHEET_NAME = "Skills Finder";
@@ -100,10 +92,14 @@ function duplicateFormValues(
   );
 
   // Get origin and destination ranges and copy paste
+  const insertedRangeRow = dbSheet.getLastRow();
+  const insertedRangeFirstColumn = dbTabFirstDataRowRange.getColumn();
+  const insertedRangeLastColumn = dbTabFirstDataRowRange.getLastColumn();
   const numberOfFormDataRows =
     1 + insertedRangeRow - dbTabFirstDataRowRange.getRow();
   const numberOfFormDataColumns =
     1 + insertedRangeLastColumn - insertedRangeFirstColumn;
+
   const formValuesRange = dbSheet.getRange(
     dbTabFirstDataRowRange.getRow(),
     insertedRangeFirstColumn,
@@ -116,7 +112,7 @@ function duplicateFormValues(
     numberOfFormDataRows,
     numberOfFormDataColumns
   );
-  formValuesRange.copyTo(duplicateDataDestinationRange);
+  formValuesRange.copyTo(duplicateDataDestinationRange, { contentsOnly: true });
 
   // Copy headers as values (prevents bug when sorting using the filtered views)
   const dbHeadersRange = dbSheet.getRange(DB_TAB_HEADERS_RANGE_NAME);
@@ -141,6 +137,9 @@ function convertSkillsLabelsIntoLevels(skillsLevelsRange) {
 }
 
 function onOpen() {
+  const ui = SpreadsheetApp.getUi();
+
+  // Display warning saying not to write in document
   const title = "Important : Ne pas écrire directement dans le document";
   const messageLine1 =
     "Les données de ce document sont actualisées automatiquement par Google Form.";
@@ -150,7 +149,10 @@ function onOpen() {
     "La manière correcte d'utiliser 'SkillsFinder' (via les filtered views) est expliquées dans l'onglet 'How To'.";
   const message = [messageLine1, messageLine2, messageLine3].join("\n");
 
-  const ui = SpreadsheetApp.getUi();
-
   ui.alert(title, message, ui.ButtonSet.OK);
+
+  // Add custom menu to reset the spreadsheet if necessary
+  ui.createMenu("Skills Finder")
+    .addItem("Refresh Data", "duplicateFormValues")
+    .addToUi();
 }
