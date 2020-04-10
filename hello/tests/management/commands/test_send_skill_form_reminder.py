@@ -1,11 +1,19 @@
 """
 Test the SendSkillFormReminder command
 """
+import datetime
+
 from django.core.management import call_command
 from django.test import TestCase
 from unittest.mock import call, patch
 
 from hello.models.slack_user import SlackUser
+
+
+class MockDate(datetime.date):
+    @classmethod
+    def weekday(cls):
+        return 0
 
 
 class SendSkillFormReminderTest(TestCase):
@@ -69,3 +77,29 @@ class SendSkillFormReminderTest(TestCase):
                 call({"json_response"}, "message_type", self.user_2),
             ]
         )
+
+    @patch(
+        "hello.management.commands.send_skill_form_reminder.create_and_save_from_json_response",
+    )
+    @patch(
+        "hello.management.commands.send_skill_form_reminder.send_message",
+        return_value={"json_response"},
+    )
+    @patch("hello.management.commands.send_skill_form_reminder.datetime.datetime")
+    def test_handle_should_do_nothing_on_dont_send_weekdays(
+        self, datetime, send_message, create_and_save_from_json_response,
+    ):
+        """
+        Tests the command only sends messages on the configured weekdays
+        """
+        with patch(
+            "hello.management.commands.send_skill_form_reminder.Command.WEEKDAYS"
+        ) as WEEKDAYS_CONSTANT:
+            WEEKDAYS_CONSTANT.return_value = ["dont_send_reminder_weekday"]
+            datetime.today.return_value = MockDate(2020, 8, 26)
+            call_command("send_skill_form_reminder", 2)
+
+            assert not send_message.called, "send_message should not have been called"
+            assert (
+                not create_and_save_from_json_response.called
+            ), "create_and_save_from_json_response should not have been called"
