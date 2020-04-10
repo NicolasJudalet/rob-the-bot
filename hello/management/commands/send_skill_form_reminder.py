@@ -2,13 +2,12 @@
 Command used to send the Skill Form Reminder message
 to all the volunteers who have not answered it yet
 """
-import datetime
 import logging
 
-from django.conf import settings
 from django.core.management.base import BaseCommand
 
 from hello.api.slack import send_message
+from hello.helpers.should_send_reminder_today import should_send_reminder_today
 from hello.repositories.slack_user import get_users_to_remind
 from hello.repositories.message import create_and_save_from_json_response
 from hello.repositories.message_type import (
@@ -35,19 +34,10 @@ class Command(BaseCommand):
             "message-type-id", type=int, help="The id of the type of message to send"
         )
 
-    WEEKDAYS = [
-        "Monday",
-        "Tuesday",
-        "Wednesday",
-        "Thursday",
-        "Friday",
-        "Saturday",
-        "Sunday",
-    ]
-
     def handle(self, *args, **kwargs):
-        current_day_of_week = self.WEEKDAYS[datetime.datetime.today().weekday()]
-        if current_day_of_week in settings.SEND_REMINDER_WEEKDAYS:
+        logger = logging.getLogger()
+
+        if should_send_reminder_today():
             message_type_id = kwargs["message-type-id"]
 
             all_users_to_remind = get_users_to_remind(message_type_id)
@@ -61,8 +51,12 @@ class Command(BaseCommand):
                         json_response, message_type, user
                     )
                 except KeyError:
-                    logger = logging.getLogger()
                     error_message = "Could not deserialize response from slack for user {}:\n{}".format(
                         user.slack_id, json_response
                     )
                     logger.error(error_message)
+
+        else:
+            logger.info(
+                "Passing without sending messages (based on SEND_REMINDER_WEEKDAYS setting)"
+            )
