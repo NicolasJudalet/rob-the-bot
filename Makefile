@@ -31,7 +31,7 @@ creategithooks: ## Create git hooks (pre-commit and pre-push)
 	ln -sf git_hooks/pre-push .git/hooks/pre-push
 
 .PHONY: start
-start: ## Starts a given application with specific M33 configuration (default is theodo-uk - for possible values, see theodo_academy_settings.py)
+start: ## Starts Rob-the-bot app
 	@printf "Starting Rob-the-bot app\n"
 	@pipenv run python manage.py runserver
 	@printf "\n\033[33mThe app is currently running on 127.0.0.1:8000\n"
