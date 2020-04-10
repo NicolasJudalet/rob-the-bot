@@ -10,6 +10,7 @@ jobs:
           SKILL_FORM_URL: "https://docs.google.com/forms/d/e/1FAIpQLSdiw56eQNGkm5uQt7mlcR32n--J2rwfSgOYpF9eAKThFNv7rA/viewform"
           SKILL_FORM_V2_URL: "https://forms.gle/arB2AASzdJ5GwGUv9"
           FORM_ICON_URL: "https://img.icons8.com/nolan/96/google-forms.png"
+          DJANGO_SETTINGS_MODULE: "gettingstarted.settings_dev"
       - image: nimbustech/postgres-ssl:9.5
         environment:
           POSTGRES_USER: root
