@@ -3,12 +3,12 @@ Repository methods to access and update MessageType objects
 """
 import json
 import os
-from gettingstarted.settings import BASE_DIR
+from django.conf import settings
 from hello.models.message_type import MessageType
 
 
 def get_hydrated_message_body(message_type_id, acknowledgement=False):
-    MESSAGE_TEMPLATES_DIR = "{}/hello/api/payload_templates".format(BASE_DIR)
+    MESSAGE_TEMPLATES_DIR = "{}/hello/api/payload_templates".format(settings.BASE_DIR)
     SKILL_FORM_URL_MAPPING = {
         1: "SKILL_FORM_URL",
         2: "SKILL_FORM_V2_URL",
